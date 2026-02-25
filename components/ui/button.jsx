@@ -11,6 +11,8 @@ export default function Button({children, onPress}){
 
     const styles = StyleSheet.create({
         container: {
-            backgroundColor: 'gray'
+            backgroundColor: 'blue',
+            padding: '0.3rem',
+            borderRadius: '5px',
         }
     })
