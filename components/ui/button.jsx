@@ -1,18 +1,44 @@
-import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
+import { TouchableOpacity, StyleSheet } from 'react-native'
 
-export default function Button({children, onPress}){
+export default function Button({ children, onPress, variant = 'primary', size = 'medium', style }){
 
     return(
-        <TouchableOpacity style={styles.container} onPress={onPress}>
+        <TouchableOpacity 
+            style={[styles.container, styles[variant], styles[size], style]} 
+            onPress={onPress}
+        >
             {children}
         </TouchableOpacity>
     )
 }
 
-    const styles = StyleSheet.create({
-        container: {
-            backgroundColor: 'blue',
-            padding: '0.3rem',
-            borderRadius: '5px',
-        }
-    })
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'blue',
+        padding: '0.3rem',
+        borderRadius: '5px',
+    },
+
+    primary: {
+        backgroundColor: 'blue',
+    },
+    secondary: {
+        backgroundColor: 'gray',
+    },
+    danger: {
+        backgroundColor: 'red',
+    },
+    pure: {
+        backgroundColor: 'white',
+    },
+
+    small: {
+        padding: 5,
+    },
+    medium: {
+        padding: 10,
+    },
+    large: {
+        padding: 15,
+    },
+})
