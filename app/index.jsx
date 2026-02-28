@@ -1,67 +1,72 @@
 import uuid from 'react-native-uuid'
-import { View, Text, StyleSheet, FlatList, Switch } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Switch, TextInput } from 'react-native'
 import Button from '../components/ui/button.jsx'
 import Input from '../components/ui/input.jsx'
 import { useState } from 'react'
 
 export default function App(){
 
-    const [inputTask, setInputTask] = useState("");
-    const [task, setTask] = useState([]);
-
-    const handleTaskChange = (text) => {
-        setInputTask(text)
-    }
-
-    const handleSubmit = () => {
-        setTask([... task,{
-            id: uuid.v4(), 
-            value: inputTask,
+    const [entry, setEntry] = useState([
+        {
+            id: uuid.v4(),
+            value: "",
             completed: false,
-        }])
+        }
+    ]);
+
+    const handleAddNewEntry= () => {
+        setEntry(prev => [
+            ...prev,
+            {
+                id: uuid.v4(),
+                value: "",
+                completed: false,
+            }
+        ])
     }
 
-    const handleCompletedTask = (id) => {
-            setTask(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t ))
+    const handleEntryChange = (id, text) => {
+        setEntry(prev => prev.map(e => e.id === id  ? {...e, value: text} : e));
+    }
+
+    const handleCompletedEntry = (id) => {
+            setEntry(prev => prev.map(e => e.id === id ? { ...e, completed: !e.completed } : e ));
     }
 
     return(
         <View style={styles.container} >
-            <View style={styles.inputAndButtonContainer}>
-                <Input autoFocus={true} value={inputTask} onChangeText={handleTaskChange} placeholder={"Enter a task"}></Input>
-                <Button onPress={handleSubmit}><Text style={{ color: 'white' }}>Submit</Text></Button>
-            </View>
             <FlatList 
-                style={styles.taskContainer}
-                data={task.filter(t => !t.completed)}
+                style={styles.entryContainer}
+                data={entry.filter(e => !e.completed)}
                 keyExtractor={(item) => item.id}
                 renderItem={({item}) => {
                     return(
-                        <View style={styles.task} >
-                            <Button variant={item.completed ? "secondary" : "pure"} onPress={() => handleCompletedTask(item.id)}/>
-                            <Text style={{color: 'white',}}>{item.value}</Text>
+                        <View style={styles.entry} >
+                            <Button style={{marginLeft: 10}} variant={item.completed ? "secondary" : "pure"} onPress={() => handleCompletedEntry(item.id)}/>
+                            <TextInput  placeholderTextColor="white" style={{color: 'white',}} value={item.value} onChangeText={(text) => handleEntryChange(item.id, text)} placeholder="Enter task"></TextInput>
                         </View>
                         
                     )
                 }}
             ></FlatList>
 
-        
+            <Button onPress={handleAddNewEntry}><Text style={{color: 'white',}}>Add New +</Text></Button>
             <Text>Checked List</Text>
 
             <FlatList 
-                style={styles.taskContainer}
-                data={task.filter(t => t.completed)}
+                style={styles.entryContainer}
+                data={entry.filter(e => e.completed)}
                 keyExtractor={(item) => item.id}
                 renderItem={({item}) => {
                     return(
-                        <View style={styles.task}>
-                            <Button variant="secondary" onPress={() => handleCompletedTask(item.id)}/>
-                            <Text style={{color: 'white', textDecorationLine: 'line-through'}}>{item.value}</Text>
+                        <View style={styles.entry} >
+                            <Button style={{marginLeft: 10}} variant={item.completed ? "secondary" : "pure"} onPress={() => handleCompletedEntry(item.id)}></Button>
+                            <TextInput placeholderTextColor="white" style={styles.entryInput} value={item.value} onChangeText={(text) => handleEntryChange(item.id, text)} placeholder="Enter task"></TextInput>
                         </View>
+                        
                     )
                 }}
-            />   
+            ></FlatList>
 
         </View>
     )
@@ -73,28 +78,23 @@ export default function App(){
             justifyContent: 'center',
             alignItems: 'center',
             gap: 10,
-            flex: 1
+            flex: 1,
+            marginTop: 70
         },
 
-        inputAndButtonContainer: { 
+
+        entryContainer: {
             display: 'flex',
-            flexDirection: 'row',
-            gap: 20,
-            // backgroundColor: 'red',
-            marginTop: 60,
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 350, //
+            width: 300,
         },
 
-
-        taskContainer: {
-            display: 'flex',
-            width: 350,
-            
+        entryInput: {
+            color: 'white',
+            borderWidth: 0,
+             borderColor: 'transparent',
         },
 
-        task: { 
+        entry: { 
             backgroundColor: 'green',
             color: 'white',
             display: 'flex',
