@@ -30,7 +30,11 @@ export default function App(){
     }
 
     const handleCompletedEntry = (id) => {
-            setEntry(prev => prev.map(e => e.id === id ? { ...e, completed: !e.completed } : e ));
+        setEntry(prev => prev.map(e => e.id === id ? { ...e, completed: !e.completed } : e ));
+    }
+
+    const handleDeleteEntry = (id) => {
+        setEntry(prev => prev.filter(e => e.id != id))
     }
 
     return(
@@ -44,6 +48,7 @@ export default function App(){
                         <View style={styles.entry} >
                             <Button style={{marginLeft: 10}} variant={item.completed ? "secondary" : "pure"} onPress={() => handleCompletedEntry(item.id)}/>
                             <TextInput  placeholderTextColor="white" style={{color: 'white',}} value={item.value} onChangeText={(text) => handleEntryChange(item.id, text)} placeholder="Enter task"></TextInput>
+                            <Button variant={"secondary"} onPress={() => handleDeleteEntry(item.id)}><Text>x</Text></Button>
                         </View>
                         
                     )
@@ -62,6 +67,7 @@ export default function App(){
                         <View style={styles.entry} >
                             <Button style={{marginLeft: 10}} variant={item.completed ? "secondary" : "pure"} onPress={() => handleCompletedEntry(item.id)}></Button>
                             <TextInput placeholderTextColor="white" style={styles.entryInput} value={item.value} onChangeText={(text) => handleEntryChange(item.id, text)} placeholder="Enter task"></TextInput>
+                            <Button variant={"secondary"} onPress={() => handleDeleteEntry(item.id)}><Text>x</Text></Button>
                         </View>
                         
                     )
