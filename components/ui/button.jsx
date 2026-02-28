@@ -15,8 +15,7 @@ export default function Button({ children, onPress, variant = 'primary', size = 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'blue',
-        padding: '0.3rem',
-        borderRadius: '5px',
+        borderRadius: 5,
     },
 
     primary: {

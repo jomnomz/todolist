@@ -11,10 +11,10 @@ export default function Input({value, onChangeText, placeholder}){
             color: 'white',
             backgroundColor: 'gray',
             display: 'flex',
-            width: '100%',
+            width: 270,
             // border: '1px solid',
-            borderRadius: '5px',
-            padding: '0.3rem',
-            paddingLeft: '0.8rem'
+            borderRadius: 5,
+            padding: 10,
+            paddingLeft: 20
         }
     })
