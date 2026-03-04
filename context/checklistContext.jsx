@@ -7,7 +7,13 @@ export function ChecklistProvider({ children }) {
   const [checklists, setChecklists] = useState([]);
 
   function addChecklist(title, entries) {
-    setChecklists(prev => [...prev, { id: uuid.v4(), title, entries }]);
+    const newChecklist = {
+      id: uuid.v4(),
+      title,
+      entries
+    };
+
+    setChecklists(prev => [...prev, newChecklist]);
   }
 
   function deleteChecklist(id) {
@@ -15,7 +21,13 @@ export function ChecklistProvider({ children }) {
   }
 
   return (
-    <ChecklistContext.Provider value={{ checklists, addChecklist, deleteChecklist }}>
+    <ChecklistContext.Provider
+      value={{
+        checklists,
+        addChecklist,
+        deleteChecklist
+      }}
+    >
       {children}
     </ChecklistContext.Provider>
   );
