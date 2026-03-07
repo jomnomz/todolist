@@ -1,10 +1,29 @@
 import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { useRoute } from '@react-navigation/native'
 import Button from '../components/ui/button.jsx'
 import { useChecklist } from '../context/checklistContext'
+import { useEffect } from 'react'
 
 export default function HomeScreen({navigation}){
 
     const { checklists, deleteChecklist } = useChecklist();
+
+    const route = useRoute()
+
+    useEffect(() => {
+        if (route.params?.id) {
+
+            const foundChecklist = checklists.find(
+            c => c.id === route.params.id
+            )
+
+            if (foundChecklist) {
+            setTitle(foundChecklist.title)
+            setEntries(foundChecklist.entries)
+            }
+
+        }
+    }, [route.params, checklists])
 
     return(
         <View style={styles.container}>
@@ -13,7 +32,7 @@ export default function HomeScreen({navigation}){
                 data={checklists}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({item}) => (
-                    <View style={styles.card}>
+                    <Button style={styles.card} onPress={ () => navigation.navigate("CheckList", { id: item.id })}>
                         <Text style={{color: 'white'}}>{item.title}</Text>
 
                         <Button 
@@ -22,7 +41,7 @@ export default function HomeScreen({navigation}){
                         >
                           <Text style={{color: 'white'}}>x</Text>
                         </Button>
-                    </View>
+                    </Button>
                 )}
             />
 

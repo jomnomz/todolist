@@ -1,7 +1,8 @@
 import uuid from 'react-native-uuid'
 import { View, Text, StyleSheet, FlatList, TextInput } from 'react-native'
+import { useRoute } from '@react-navigation/native'
 import Button from '../components/ui/button.jsx'
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import { useChecklist } from '../context/checklistContext'
 
 export default function CheckedListScreen({ navigation }) {
@@ -10,7 +11,25 @@ export default function CheckedListScreen({ navigation }) {
   ])
   const [title, setTitle] = useState("")
 
-  const { addChecklist } = useChecklist();
+  const { checklists, addChecklist } = useChecklist();
+
+  const route = useRoute()
+
+  useEffect(() => {
+      if (route.params?.id) {
+
+          const foundChecklist = checklists.find(
+            c => c.id === route.params.id
+          )
+
+          if (foundChecklist) {
+            setTitle(foundChecklist.title)
+            setEntries(foundChecklist.entries)
+          }
+
+      }
+  }, [route.params, checklists])
+
 
   const handleAddNewEntry = () => {
     setEntries(prev => [
