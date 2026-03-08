@@ -16,6 +16,16 @@ export function ChecklistProvider({ children }) {
     setChecklists(prev => [...prev, newChecklist]);
   }
 
+  function updateChecklist(id, title, entries) {
+    setChecklists(prev =>
+      prev.map(checklist =>
+        checklist.id === id
+          ? { ...checklist, title, entries }
+          : checklist
+      )
+    );
+  }
+
   function deleteChecklist(id) {
     setChecklists(prev => prev.filter(c => c.id !== id));
   }
@@ -25,7 +35,8 @@ export function ChecklistProvider({ children }) {
       value={{
         checklists,
         addChecklist,
-        deleteChecklist
+        deleteChecklist,
+        updateChecklist
       }}
     >
       {children}
